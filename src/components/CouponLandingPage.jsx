@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Gift, AlertCircle, CheckCircle2 } from 'lucide-react';
 
-const CouponLandingPage=()=> {
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const CouponLandingPage = () => {
     const [coupons, setCoupons] = useState([]);
     const [claimedCoupon, setClaimedCoupon] = useState(null);
     const [error, setError] = useState("");
@@ -13,7 +15,7 @@ const CouponLandingPage=()=> {
 
     const fetchCoupons = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/api/coupons/available");
+            const response = await axios.get(`${API_URL}/api/coupons/available`);
             setCoupons(response.data);
         } catch (err) {
             setError("Failed to fetch coupons.");
@@ -22,13 +24,14 @@ const CouponLandingPage=()=> {
 
     const claimCoupon = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/api/coupons/claim");
+            const response = await axios.post(`${API_URL}/api/coupons/claim`);
             setClaimedCoupon(response.data.coupon);
             fetchCoupons(); // Refresh available coupons
         } catch (err) {
             setError(err.response?.data?.message || "Failed to claim coupon.");
         }
     };
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-6 text-gray-100">
             <div className="w-full max-w-md">
@@ -95,5 +98,6 @@ const CouponLandingPage=()=> {
             </div>
         </div>
     );
-}
-export default CouponLandingPage
+};
+
+export default CouponLandingPage;
