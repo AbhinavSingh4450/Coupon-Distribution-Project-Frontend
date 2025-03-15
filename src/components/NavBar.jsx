@@ -1,73 +1,31 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../utils/constants';
-import axios from 'axios';
-import { removeUser } from '../utils/userSlice';
+import {  Home,  Ticket } from 'lucide-react';
 
 const NavBar = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const user = useSelector((store)=> store.user);
-
-  const handleLogout = async ()=>{
-     try { await axios.post(
-        BASE_URL+"/logout",
-        {},
-        {withCredentials:true}
-      );
-      dispatch(removeUser());
-      return navigate('/login');}
-
-      catch(err){
-        res.send("Cannot Logout");
-      }
-  }
-
   return (
-    <div className="navbar bg-base-200">
-  <div className="flex-1">
-    <Link to="/" className="btn btn-ghost text-xl">DevTinder</Link>
-  </div>
-  <div className="flex-none gap-2">
-
-    <div className="dropdown dropdown-end mr-5 ">
-
-      {user && (<div className='flex flex-row'>
-
-      <h1 className='mt-3 mr-2' >Welcome, {user.firstName}</h1>
-
-     <div className='flex flex-row'>
-     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar ">
-        
-        <div className="w-10 rounded-full ">
-          <img
-            alt="Tailwind CSS Navbar component"
-            src={user.photoUrl}/>
+    <header className="fixed top-0 left-0 right-0 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800/50 z-50">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Ticket className="w-6 h-6 text-purple-400" />
+            <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Coupon Hub
+            </h1>
+          </div>
+          <nav>
+            <ul className="flex items-center space-x-8">
+              <li>
+                <a href="/" className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors duration-200">
+                  <Home className="w-4 h-4" />
+                  <span>Home</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
-
-     </div>
-     </div>)}
-
-      <ul
-        tabIndex={0}
-        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-        <li>
-          <Link to="/Profile" className="justify-between">
-            Profile
-          </Link>
-        </li>
-        <li><Link to="/connections">Connections</Link></li>
-        <li><Link to='/requests'>Requests</Link></li>
-        <li><Link onClick={handleLogout}>Logout</Link></li>
-      </ul>
-    </div>
-  </div>
-</div>
-    
-
-  )
+    </header>
+  );
 }
 
 export default NavBar
